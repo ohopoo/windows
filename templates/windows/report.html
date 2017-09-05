@@ -1,0 +1,118 @@
+{% extends 'windows/base.html' %}
+{% load windows_filter %}
+{% block navbar %}
+    <li><a href="/">Home</a></li>
+    <li><a href="/announcement/">Announcements</a></li>
+    <li><a href="/activities/">Activities</a></li>
+    <li class="active"><a href="/report/">Reports</a></li>
+    <li><a href="/bem/all/">Bems</a></li>
+    <li><a href="/team/all/">Teams</a></li>
+    <li><a href="/townhall/">Townhall</a></li>
+    <li><a href="/quiz/">Quiz</a></li>
+    <li><a href="/scoreboard/">Scoreboard</a></li>
+{% endblock %}
+{% block content %}
+    {% if error %}
+        <div class="alert alert-danger">{{ error }}</div>
+    {% endif %}
+    {% if success %}
+        <div class="alert alert-success">{{ success }}</div>
+    {% endif %}
+    <div class="sub-header">
+        <div class="container">
+            <h4 class="title">Weekly report</h4>
+            <div class="flex"></div>
+            <ol class="breadcrumb">
+                <li class="item"><a class="link" href="/">Home</a></li>
+                <li class="item active">Weekly report</li>
+            </ol>
+        </div>
+    </div>
+
+    <div class="main-container container">
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="col-md-1"></div>
+                <div class="col-md-10">
+                    <hr/>
+                    <form action="/sendreport/" method="post">
+                        <div class="row">
+                            <div class="form-group">
+                                <textarea class="form-control" placeholder="Your General Tasks" name="general" id="general" required></textarea>
+                            </div>
+                            <div class="form-group">
+                                <textarea class="form-control" placeholder="Your Achievements" name="achievement" id="achievement" required></textarea>
+                            </div>
+                            <div class="form-group">
+                                <textarea class="form-control" placeholder="Your Planning" name="planning" id="planning" required></textarea>
+                            </div>
+                            <div class="form-group">
+                                <textarea class="form-control" placeholder="Your Troubles" name="trouble" id="trouble" required></textarea>
+                            </div>
+                            <div class="clearfix"></div>
+                            <div class="text-center">
+                                {% csrf_token %}
+                                <button type="submit" class="btn btn-danger">Send</button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+                <div class="col-md-1"></div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="col-md-1"></div>
+                <div class="col-md-10">
+                    <section id="loginForm">
+                        {% csrf_token %}
+                        <hr/>
+                        <div class="form-group">
+                            <div class="row">
+                                <div class=" col-md-4">
+                                    <label for="teamreport" class="control-label">Team</label>
+                                    <select name="teamreport" id="teamreport" class="form-control" tabindex="2">
+                                        <option value="">--</option>
+                                        {% for team in teams %}
+                                            <option value="{{ team.id }}">{{ team.name }}</option>
+                                        {% endfor %}
+                                    </select>
+                                </div>
+                                <div class=" col-md-8">
+                                    <label for="memberreport" class="control-label">Member</label>
+                                    <select name="memberreport" id="memberreport" class="form-control" tabindex="2">
+                                        <option value="">--</option>
+                                        {% for dev in devs %}
+                                            <option value="{{ dev.id }}">{{ dev.name }}</option>
+                                        {% endfor %}
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="row">
+                                <div class=" col-md-12">
+                                    <hr>
+                                    <table class="table table-striped table-hover table-bordered dataTable fixed">
+                                        <thead>
+                                        <tr>
+                                            <th>#Dev/Week</th>
+                                            <th>General task</th>
+                                            <th>Achievement</th>
+                                            <th>Planning</th>
+                                            <th>Trouble</th>
+                                        </tr>
+                                        </thead>
+                                        <tbody>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </section>
+                </div>
+                <div class="col-md-1"></div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

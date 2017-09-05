@@ -1,0 +1,119 @@
+{% extends 'windows/base.html' %}
+{% load staticfiles %}
+{% load windows_filter %}
+{% block navbar %}
+    <li><a href="/">Home</a></li>
+    <li><a href="/announcement/">Announcements</a></li>
+    <li><a href="/activities/">Activities</a></li>
+    <li><a href="/report/">Reports</a></li>
+    <li class="active"><a href="/bem/all/">Bems</a></li>
+    <li><a href="/team/all/">Teams</a></li>
+    <li><a href="/townhall/">Townhall</a></li>
+    <li><a href="/quiz/">Quiz</a></li>
+    <li><a href="/scoreboard/">Scoreboard</a></li>
+{% endblock %}
+{% block content %}
+    <!-- Subheader -->
+    {% if not bems is None %}
+        <div class="sub-header">
+            <div class="container">
+                <h4 class="title">Bems</h4>
+                <div class="flex"></div>
+                <ol class="breadcrumb">
+                    <li class="item"><a class="link" href="/">Home</a></li>
+                    <li class="item active">Bems</li>
+                </ol>
+            </div>
+        </div><!--/ End Subheader -->
+    {% else %}
+        {% if error %}
+            <div class="alert alert-danger">{{ error }}</div>
+        {% endif %}
+        {% if success %}
+            <div class="alert alert-success">{{ success }}</div>
+        {% endif %}
+        <div class="sub-header">
+            <div class="container">
+                <h4 class="title">Bem detail</h4>
+                <div class="flex"></div>
+                <ol class="breadcrumb">
+                    <li class="item"><a class="link" href="/">Home</a></li>
+                    <li class="item"><a class="link" href="/bem/all/">Bems</a></li>
+                    <li class="item active">Bem detail</li>
+                </ol>
+            </div>
+        </div>
+    {% endif %}
+
+    {% if not bems is None %}
+        <div class="main-container page-task">
+            <div class="container">
+                <div class="row">
+                    <div class="col-md-offset-3 col-md-6 block-task">
+                        <h3 class="heading">Bem Candidates</h3>
+                        <ul class="list-task">
+                            {% for bem in bems %}
+                                <li class="item-task">
+                                    <a href="/bem/{{ bem.id }}">
+                                        <span class="task-name">{{ bem.dev.name }}</span>
+                                        <span class="label {% if bem.is_best %} label-warning {% else %} label-info {% endif %}">
+                                        {% if user.is_superuser or bem.expired %}
+                                            {{ bem.score }}
+                                        {% else %}
+                                            {{ bem.dev.level }}
+                                        {% endif %}
+                                        </span>
+                                    </a>
+                                </li>
+                            {% endfor %}
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    {% elif not bem is None %}
+        <div class="main-container page-task-detail">
+            <div class="container">
+                <h1 class="task-name">{{ bem.dev.name }}</h1>
+                <p><span class="label label-danger label-task">{{ bem.dev.team }}</span></p>
+                <div class="box-wrap">
+                    <code>Description</code>
+                    {{ bem.description|linebreaks }} </br>
+                    <code>Ownership responsibility</code>
+                    {{ bem.ownership_responsibility|linebreaks }} </br>
+                    <code>Technical skills</code>
+                    {{ bem.technical_skills|linebreaks }} </br>
+                    <code>Transparency support</code>
+                    {{ bem.transparency_support|linebreaks }} </br>
+                    <code>Confluence link</code> </br>
+                    {% for link in bem.confluence_link.all %}
+                        {{ link.title }} - <a href="{{ link.link }}" target="_blank">{{ link.link }}</a> </br>
+                    {% endfor %}
+                </div>
+                <div class="solve-task">
+                    {% if voted %}
+                        <span class="text-success">You voted for this user !</span><br>
+                    {% endif %}
+                    {% if bem.expired %}
+                        <span class="text-danger">Bem is over !</span><br>
+                    {% endif %}
+                    {% if user.is_superuser or bem.expired %}
+                        <span class="text-info">Scores : {{ bem.score }}</span><br>
+                        <ul class="list-people">
+                            {% for dev in bem.vote.users.all %}
+                                <li class="item"><a href="/profile/{{ dev.user.username }}"><img src="{{ dev.user.email|gavatar:24 }}" alt="{{ dev.name }}" title="{{ dev.name }}"></a></li>
+                            {% endfor %}
+                        </ul>
+                    {% endif %}
+                </div>
+                {% if bem.expired is False %}
+                    <form class="form-frag" role="form" action="/bem/{{ bem.id }}/" method="POST">
+                        {% csrf_token %}
+                        <div style="display:none;"><input id="bem_id" name="bem_id" type="hidden" value="{{ bem.id }}"></div>
+                        <button class="btn btn-primary" type="submit">Vote</button>
+                    </form>
+                {% endif %}
+            </div>
+        </div>
+    {% endif %}
+{% endblock %}

@@ -1,0 +1,193 @@
+{% extends 'windows/base.html'%}
+{% load staticfiles %}
+{% load windows_filter %}
+{% block navbar %}
+    <li><a href="/">Home</a></li>
+    <li><a href="/announcement/">Announcements</a></li>
+    <li class="active"><a href="/activities/">Activities</a></li>
+    <li><a href="/report/">Reports</a></li>
+    <li><a href="/bem/all/">Bems</a></li>
+    <li><a href="/team/all/">Teams</a></li>
+    <li><a href="/townhall/">Townhall</a></li>
+    <li><a href="/quiz/">Quiz</a></li>
+    <li><a href="/scoreboard/">Scoreboard</a></li>
+{% endblock %}
+{% block content %}
+    <div style="display: none" id="one-activity-dom">
+        <dl class="activities">
+            <dd class="pos-left clearfix">
+                <div class="col-md-2 col-xs-2 activities-time">
+                    <div class="time"></div>
+                </div>
+                <div class="col-md-2 col-xs-2 activities-circ">
+                    <div class="circ">
+                    </div>
+                </div>
+                <div class="col-md-8 col-xs-8 activities-details">
+                    <div class="events col-md-12 col-sm-12 col-xs-12">
+                        <div class="member-info">
+                            <div class="member-avatar">
+                                <img class="events-object img-rounded" src="/activities/">
+                            </div>
+                            <div class="member-name">
+                                <h4 class="user-profile"></h4>
+                            </div>
+                            <div class="teams">
+                                <span></span>
+                            </div>
+                        </div>
+                        <div class="events-body col-md-12 col-xs-12"></div>
+                    </div>
+                </div>
+            </dd>
+        </dl>
+    </div>
+    <!-- Subheader -->
+    <div class="sub-header">
+        <div class="container">
+            <h4 class="title">Activities</h4>
+            <div class="flex"></div>
+            <ol class="breadcrumb">
+                <li class="item"><a class="link" href="/">Home</a></li>
+                <li class="item active">Activities</li>
+            </ol>
+        </div>
+    </div><!--/ End Subheader -->
+    <!-- Activities main content -->
+    <div class="activities-main-content">
+        <div class="container">
+            <div class="row clearfix">
+                <div class="col-md-12">
+                    {% for dev in devs %}
+                            {% if dev.birthday_party %}
+                            <dl class="activities">
+                                <dd data-id="232" class="pos-left clearfix">
+                                    <div class="col-md-2 col-xs-2 activities-time">
+                                        <div class="time">{{ dev.birth }}</div>
+                                    </div>
+                                    <div class="col-md-2 col-xs-2 activities-circ">
+                                        <div class="circ">
+                                        </div>
+                                    </div>
+                                    <div class="col-md-8 col-xs-8 activities-details">
+                                        <div class="events col-md-12 col-sm-12 col-xs-12">
+                                            <div class="member-info">
+                                                <div class="member-avatar">
+                                                    <img class="events-object img-rounded" src="{{ dev.user.email|gavatar:64 }}">
+                                                </div>
+                                                <div class="member-name">
+                                                    <h4 class="user-profile"><a href="/profile/{{ dev.user.username }}">&nbsp;<span class="text-default">{{ dev.name }}</span></a> </h4>
+                                                </div>
+                                                <div class="teams">
+                                                    <span>{{ dev.team.name }}</span>
+                                                </div>
+                                            </div>
+                                            <div class="events-body col-md-12 col-xs-12">
+                                                <p>has Happy Birthday</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </dd>
+                            </dl>
+                        {% endif %}
+                    {% endfor %}
+                    {% for activity in activities %}
+                        <dl class="activities">
+                            <dd data-id="232" class="pos-left clearfix">
+                                <div class="col-md-2 col-xs-2 activities-time">
+                                    <div class="time">{{ activity.date|date:"M d f" }}</div>
+                                </div>
+                                <div class="col-md-2 col-xs-2 activities-circ">
+                                    <div class="circ">
+                                    </div>
+                                </div>
+                                <div class="col-md-8 col-xs-8 activities-details">
+                                    <div class="events col-md-12 col-sm-12 col-xs-12">
+                                        <div class="member-info">
+                                            <div class="member-avatar">
+                                                <img class="events-object img-rounded" src="{{ activity.dev.user.email|gavatar:64 }}">
+                                            </div>
+                                            <div class="member-name">
+                                                <h4 class="user-profile"><a href="/profile/{{ activity.dev.user.username }}">&nbsp;<span class="text-default">{{ activity.dev.name }}</span></a> </h4>
+                                            </div>
+                                            <div class="teams">
+                                                <span>{{ activity.dev.team.name }}</span>
+                                            </div>
+                                        </div>
+                                        <div class="events-body col-md-12 col-xs-12">
+                                            <p>{{ activity.description }}</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </dd>
+                        </dl>
+                    {% endfor %}
+                    {% for bem in bems %}
+                        {% if bem.is_best %}
+                            <dl class="activities">
+                                <dd data-id="232" class="pos-left clearfix">
+                                    <div class="col-md-2 col-xs-2 activities-time">
+                                        <div class="time">{{ bem.date|date:"M d f" }}</div>
+                                    </div>
+                                    <div class="col-md-2 col-xs-2 activities-circ">
+                                        <div class="circ">
+                                        </div>
+                                    </div>
+                                    <div class="col-md-8 col-xs-8 activities-details">
+                                        <div class="events col-md-12 col-sm-12 col-xs-12">
+                                            <div class="member-info">
+                                                <div class="member-avatar">
+                                                    <img class="events-object img-rounded" src="{{ bem.dev.user.email|gavatar:64 }}">
+                                                </div>
+                                                <div class="member-name">
+                                                    <h4 class="user-profile"><a href="/profile/{{ bem.dev.user.username }}">&nbsp;<span class="text-default">{{ bem.dev.name }}</span></a> </h4>
+                                                </div>
+                                                <div class="teams">
+                                                    <span>{{ bem.dev.team.name }}</span>
+                                                </div>
+                                            </div>
+                                            <div class="events-body col-md-12 col-xs-12">
+                                                <p>is Best Programmer in {{ bem.month_name }}</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </dd>
+                            </dl>
+                        {% endif %}
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- End activities main content -->
+    <script>
+        $("body").css("background-color", "#f1f2f6");
+        var loadAgain = true;
+        $(window).scroll(function() {
+            if (loadAgain && $(window).scrollTop() / $(document).height() >= 0.7) {
+                loadAgain = false;
+                var lastId = $("dd").last().data("id");
+                console.log(lastId);
+                $.post("activities/more", {id: lastId}).done(function(data) {
+                    $.each(data['result'], function(index, value) {
+                        var html = create_activity(value);
+                        $("dl").last().after(html);
+                    });
+                    loadAgain = true;
+                });
+            }
+        });
+
+        function create_activity(data){
+            var dom = $("#one-activity-dom");
+            dom.find(".time").text(data['time']);
+            dom.find(".img-rounded").attr('src', data['avatar']);
+            dom.find("dd").attr('data-id', data['id']);
+            dom.find(".user-profile").html(data['profile']);
+            dom.find(".teams").html(data['team']);
+            dom.find(".events-body").html(data['body']);
+            return dom.html();
+        }
+    </script>
+
+{% endblock %}

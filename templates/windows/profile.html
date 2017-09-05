@@ -1,0 +1,100 @@
+{% extends 'windows/base.html' %}
+{% load windows_filter %}
+{% block navbar %}
+    <li><a href="/">Home</a></li>
+    <li><a href="/announcement/">Announcements</a></li>
+    <li><a href="/activities/">Activities</a></li>
+    <li><a href="/report/">Reports</a></li>
+    <li><a href="/bem/all/">Bems</a></li>
+    <li><a href="/team/all/">Teams</a></li>
+    <li><a href="/townhall/">Townhall</a></li>
+    <li><a href="/quiz/">Quiz</a></li>
+    <li><a href="/scoreboard/">Scoreboard</a></li>
+{% endblock %}
+{% block content %}
+    <!-- Subheader -->
+    <div class="sub-header">
+        <div class="container">
+            <h4 class="title">Profile</h4>
+            <div class="flex"></div>
+            <ol class="breadcrumb">
+                <li class="item"><a class="link" href="/">Home</a></li>
+                <li class="item active">Profile</li>
+            </ol>
+        </div>
+    </div><!--/ End Subheader -->
+
+    <div class="main-container page-profile">
+        <div class="container">
+            <!-- <div class="alert alert-danger">Message Alert</div> -->
+            {% if dev %}
+                <div class="box-user">
+                    <p><img class="avatar" src="{{ dev.user.email|gavatar:160 }}" width="160" height="160"></p>
+                    <h2 class="name">{{ dev.name }}</h2>
+                    <h5>{{ dev.level }}</h5>
+                    {% if dev.id == user.developer.id %}
+                        <div class="wrap-button">
+                            <a class="btn btn-default" href="https://en.gravatar.com/emails/">Change Avatar</a>
+                        </div>
+                    {% endif %}
+                </div>
+                <div class="box-join-team">
+                    <h3 class="title">Team</h3>
+                    <p class="description">
+                        <a href="/team/{{ dev.team.id }}">{{ dev.team }}</a>
+                    </p>
+                </div>
+                <div class="box-achievement">
+                    <h3 class="title">Information</h3>
+                    <table class="table table-bordered table-customize table-responsive">
+                        <thead>
+                        <tr>
+                            <th width="">Email</th>
+                            <th width="">Phone</th>
+                            <th width="">Skype</th>
+                            <th width="">Date Of Joining</th>
+                            <th width="">Date Of Birth</th>
+                            <th width="">Place Of Birth</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr>
+                            <td data-title="Email">{{ dev.user.email }}</td>
+                            <td data-title="Phone">{{ dev.phone }}</td>
+                            <td data-title="Skype">{{ dev.skype }}</td>
+                            <td data-title="Date Of Joining">{{ dev.start }}</td>
+                            <td data-title="Date Of Birth">{{ dev.birth }}</td>
+                            <td data-title="Place Of Birth">{{ dev.city }}</td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div class="box-achievement">
+                    <h3 class="title">Achievements</h3>
+                    <table class="table table-bordered table-customize table-responsive">
+                        <thead>
+                        <tr>
+                            <th width="">Name</th>
+                            <th width="">When</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        {% for bem in dev.bem_set.all %}
+                            <tr>
+                                <td data-title="Name"><a herf="#">BEM in {{ bem.month_name }}</a></td>
+                                <td data-title="When">{{ bem.date }}</td>
+                            </tr>
+                        {% endfor %}
+                        {% for acvm in dev.achievement_set.all %}
+                            <tr>
+                                <td data-title="Name"><a href="{{ acvm.link }}">{{ acvm.name }}</a></td>
+                                <td data-title="When">{{ acvm.date }}</td>
+                            </tr>
+                        {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            {% endif %}
+        </div>
+    </div>
+{% endblock %}

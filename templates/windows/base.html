@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+{% load staticfiles %}
+{% load windows_filter %}
+<!-- saved from url=(0035)https://codewar.framgia.vn/index/vi -->
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:og="http://ogp.me/ns#">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+
+    <title>DAD - Windows</title>
+
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="author" content="Windows division">
+    <meta property="og:title" content="DAD - Windows">
+    <meta property="og:site_name" content="DAD - Windows">
+    <meta property="og:description" content="DAD - Windows">
+    <link rel="shortcut icon" href="{% static 'img/favicon.ico' %}" type="image/x-icon">
+    <!-- Latest compiled and minified CSS -->
+    <link rel="stylesheet" href="{% static 'css/site.min.css' %}">
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+    <link rel="stylesheet" href="{% static 'css/font-awesome.min.css' %}">
+    <!-- Latest compiled and minified JavaScript -->
+{#    <script src="https://connect.facebook.net/signals/config/773974072749121?v=stable" async=""></script>#}
+{#    <script async="" src="https://connect.facebook.net/en_US/fbevents.js"></script>#}
+    <script async="" src="https://www.google-analytics.com/analytics.js"></script>
+
+    <script src="{% static 'js/jquery-1.11.0.min.js' %}"></script>
+    <script src="{% static 'js/site.min.js' %}"></script>
+
+    <link type="text/css" rel="stylesheet" href="{% static 'css/jssocials.css' %}">
+    <link type="text/css" rel="stylesheet" href="{% static 'css/jssocials-theme-flat.css' %}">
+
+    <script type="text/javascript" src="{% static 'js/jssocials.min.js' %}"></script>
+    <script src="{% static 'js/windows.js' %}"></script>
+
+    <!-- Google - Facebook Pixel Code -->
+    <script>
+        (function (i, s, o, g, r, a, m) {
+            i['GoogleAnalyticsObject'] = r;
+            i[r] = i[r] || function () {
+                    (i[r].q = i[r].q || []).push(arguments)
+                }, i[r].l = 1 * new Date();
+            a = s.createElement(o),
+                m = s.getElementsByTagName(o)[0];
+            a.async = 1;
+            a.src = g;
+            m.parentNode.insertBefore(a, m)
+        })(window, document, 'script', 'https://www.google-analytics.com/analytics.js', 'ga');
+        ga('create', 'UA-60613670-8', 'auto');
+        ga('send', 'pageview');
+        !function (f, b, e, v, n, t, s) {
+            if (f.fbq)return;
+            n = f.fbq = function () {
+                n.callMethod ?
+                    n.callMethod.apply(n, arguments) : n.queue.push(arguments)
+            };
+            if (!f._fbq)f._fbq = n;
+            n.push = n;
+            n.loaded = !0;
+            n.version = '2.0';
+            n.queue = [];
+            t = b.createElement(e);
+            t.async = !0;
+            t.src = v;
+            s = b.getElementsByTagName(e)[0];
+            s.parentNode.insertBefore(t, s)
+        }(window,
+            document, 'script', 'https://connect.facebook.net/en_US/fbevents.js');
+        fbq('init', '773974072749121');
+        fbq('track', 'PageView');
+    </script>
+    <noscript>&lt;img height="1" width="1" style="display:none" src="https://www.facebook.com/tr?id=773974072749121&amp;ev=PageView&amp;noscript=1"/&gt;</noscript>
+    <!-- DO NOT MODIFY -->
+    <!-- End Google - Facebook Pixel Code -->
+</head>
+<body {% block bodyclass %}{% endblock %}>
+<!-- Navbar -->
+<nav class="navbar navbar-default navbar">
+    <div class="container">
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar"
+                    aria-expanded="false" aria-controls="navbar">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="/">
+                <img src="{% static 'img/logo.png' %}" alt="Logo" width="103" height="83">
+            </a>
+        </div>
+        <div id="navbar" class="navbar-collapse collapse">
+            {% if user.is_authenticated %}
+                <ul class="nav navbar-nav">
+                    {% block navbar %}
+                    {% endblock %}
+                </ul>
+                <div class="navbar-right">
+                    <!-- Box profile for desktop -->
+                    <div class="dropdown box-profile for-desktop">
+                        <div class="dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+                            <img class="avatar-image" src="{{ user.email|gavatar:16 }}" alt="">
+                            {% if user.developer %}
+                                <strong>{{ user.developer.name|title }}</strong>
+                            {% else %}
+                                <strong>{{ user.first_name|title }}</strong>
+                            {% endif %}
+                            <span class="caret"></span>
+                        </div>
+                        <ul class="dropdown-menu" aria-labelledby="dropdownMenu1">
+                            <li><a href="/profile/{{ user.username }}">Profile</a></li>
+                            <li><a href="/logout/">Log out</a></li>
+                        </ul>
+                    </div> <!--/ End Box profile for desktop -->
+                </div>
+            {% else %}
+                <div class="navbar-right menu">
+                    <a class="btn btn-border" href="/login">Login</a>
+                </div>
+            {% endif %}
+        </div><!--/.nav-collapse -->
+    </div>
+    <!-- Box profile for mobile -->
+</nav> <!--/ End Navbar  -->
+
+{% block content %}
+{% endblock %}
+
+<!-- Footer -->
+<div class="footer">
+    {% block footer %}
+    {% endblock %}
+    <div class="main-footer">
+        <div class="container">
+            <p class="copyright">© 2017 Gameloft Windows. All rights reserved.</p>
+            <div class="flex"></div>
+            <div class="follow-social">
+                <p class="title">Follow us on</p>
+                <div class="social-icon">
+                    <a class="fa fa-facebook-f" href="https://www.facebook.com"></a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div> <!--/ End Footer -->
+
+</body>
+</html>
