@@ -1,0 +1,31 @@
+<div id="secondary" class="widget-area col-sm-12 col-md-4" role="complementary">
+    <div class="widget tabbed">
+        <div class="tabs-wrapper">
+            <ul class="nav nav-tabs">
+                <li class="active"><a href="#top10" data-toggle="tab">Top 10</a></li>
+            </ul>
+            <div class="tab-content">
+                <ul id="top10" class="tab-pane active" >
+                <div  style=" height: 500px;">
+                    {% for member in top10 %}
+                        <li>
+                            <a href="profile/{{ member.user.username }}" class="tab-thumb thumbnail" >
+                            <img width="60" height="60" avatar="{{ member.user.username }}"
+                                 class="attachment-tab-small size-tab-small wp-post-image"/></a>
+                            <div class="content">
+                            <a class="tab-entry" href="/profile/{{ member.user.username }}" >{{ member.user.first_name|default:member.user.username }} {{ member.user.last_name }}</a>
+                             <span class="posted-on">
+                                <i class="glyphicon glyphicon-star"></i>
+                                {{ member.score }} Points
+                            </span>
+                            </div>
+                        </li>
+                    {% endfor %}
+                </div>
+                </ul>
+
+            </div>
+        </div>
+    </div>
+
+</div>

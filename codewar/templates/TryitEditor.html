@@ -1,0 +1,80 @@
+{#{% extends "index.html" %}#}
+<title>{{ question.title }}</title>
+{% load staticfiles %}
+{% block headerSession %}
+    <link rel="stylesheet"  type="text/css" href="{% static 'tryiteditor/w3.css'  %}">
+    <link rel="stylesheet" href="{% static 'tryiteditor/tryiteditor.css' %}" type="text/css" >
+{% endblock %}
+{%block contents %}
+
+<div id="primary" class="content-area col-sm-12">
+    <main id="main" class="site-main" role="main">
+        <form action="editor" id="formeditor" class="formeditor" method="post">
+            {% csrf_token %}
+             <div class="trytopnav">
+            <div class="w3-bar w3-light-grey" style="border-top:1px solid #f1f1f1;overflow:auto">
+                <a id="tryhome" href="/codechallenges" class="w3-button w3-bar-item topnav-icons fa fa-home" style="font-size:28px;color:#999999;"></a>
+                <a href="javascript:void(0);" onclick="restack(currentStack)" title="Change Orientation" class="w3-button w3-bar-item topnav-icons fa1 fa-rotate" style="font-size:28px;color:#999999;margin-top:-2px"></a>
+                <select  id="language" class="w3-button w3-bar-item w3-hover-white" style="margin-left: 3px;margin-top:3px ;color:#999999;" >
+                    <option value="cpp">CPP</option>
+{#                    <option value="py">Python</option>#}
+                </select>
+                <a href="#" style="margin-top: 2px;" class="w3-button w3-bar-item w3-green w3-hover-white w3-hover-text-green" id="runcode">Run</a>
+                 <span class="w3-right w3-hide-medium w3-hide-small" style="padding:8px 8px 8px 8px;display:block"></span>
+                 <span class="w3-right w3-hide-small" style="padding:8px 0;display:block;float:right;" >Status: <span id="stateResult" style="color:#4CAF50"></span>
+                </span>
+            </div>
+        </div>
+        <div id="shield" style="display: none;"></div>
+
+        <a href="javascript:void(0)" id="dragbar" style="width: 5px; top: 138px; left: 746.2px; height: 537.4px; cursor: col-resize;"></a>
+        <div id="container">
+
+            <div id="menuOverlay" class="w3-overlay w3-transparent" style="cursor:pointer;z-index:4"></div>
+            <div id="textareacontainer" style="width: 50%; height: 100%;" >
+                <div id="textarea">
+                    <div id="textareawrapper">
+                        <div id="editor" class="CodeMirror cm-s-default CodeMirror-wrap CodeMirror-focused"></div>
+                            <input type="hidden" id="question_id" value="{{ question.id }}">
+                    </div>
+                </div>
+            </div>
+            <div id="iframecontainer" style="width: 50%; height: 100%;">
+                <div id="iframe">
+                    <div id="iframewrapper">
+                        <div frameborder="0" id="iframeResult" name="iframeResult" style="overflow-y: scroll; height:100%;">
+                            <h4>Question:</h4> <br/>{{ question.content|safe  }}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        </form>
+</main>
+</div>
+
+{% endblock %}
+{% block scriptsession %}
+    <script src="{% static 'jquery-3.2.1.min.js' %}"></script>
+    <script src="{% static 'tryiteditor/tryiteditor.js' %}"></script>
+    <script src="{% static '/ace-builds/src-noconflict/ace.js' %}" type="text/javascript" charset="utf-8"></script>
+
+    <script>
+        var editor = ace.edit("editor");
+        editor.setTheme("ace/theme/monokai");
+        editor.getSession().setMode("ace/mode/c_cpp");
+        editor.setValue("#include <iostream>\n" +
+            "using namespace std;\n" +
+            "\n" +
+            "int main()\n" +
+            "{\n" +
+            "    int inputValue;\n" +
+            "    \n" +
+            "    cin>>inputValue;\n" +
+            "    cout<<inputValue;\n" +
+            "    return 0;\n" +
+            "}")
+    </script>
+    <script src="{% static 'reconnecting-websocket.min.js'%}"></script>
+    <script src="{% static 'taskhelper.js'%}"></script>
+{% endblock %}

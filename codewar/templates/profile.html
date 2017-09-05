@@ -1,0 +1,32 @@
+{% extends "index.html" %}
+{% block contents %}
+<div id="primary" class="content-area col-sm-12">
+    <main id="main" class="site-main" role="main">
+        <article class="post type-post status-publish format-standard has-post-thumbnail hentry ">
+            <header class="entry-header page-header">
+                  <h3>Schedule Event</h3>
+            </header>
+            <div class="entry-content">
+                <ul class="timeline">
+                    {% for event in scheduleEvent %}
+
+                        <li class="{% cycle '' 'timeline-inverted' %}">
+                            <div class="{% cycle 'timeline-badge danger' 'timeline-badge success' 'timeline-badge info' 'timeline-badge warning'%}">
+                            <i>{{ event.dateTime|date:'d/m' }}</i>
+                            </div>
+                            <div class="timeline-panel">
+                                <div class="timeline-heading">
+                                    <h4 >{{ event.title }}</h4>
+                                </div>
+                                <div class="timeline-body">
+                                    <p>{{ event.content }}</p>
+                                </div>
+                            </div>
+                        </li>
+                    {% endfor %}
+                </ul>
+            </div>
+        </article>
+    </main>
+</div>
+{% endblock %}

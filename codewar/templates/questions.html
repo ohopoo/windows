@@ -1,0 +1,54 @@
+{% load static %}
+{% for question in questions %}
+{% if not question.published  and user.is_superuser or question.published%}
+<article class="post type-post status-publish format-standard has-post-thumbnail sticky hentry category-uncategorized tag-sticky-2 tag-template">
+    <header class="entry-header page-header">
+        <h3 ><a href="editor/{{ question.id }}">{{ question.title|capfirst }}</a></h3>
+        <div class="entry-meta">
+            <span class="posted-on">
+                <i class="glyphicon glyphicon-calendar"></i>
+                <time class="entry-date published">{{ question.created }}</time>
+            </span>
+            <span class="posted-on">
+                <i class="glyphicon glyphicon-star"></i>
+                {{ question.score }} Points
+            </span>
+            <span class="posted-on">
+                <i class="glyphicon glyphicon-check"></i>
+                {{ question.testCaseCount }} Test Cases
+            </span>
+            <span class="posted-on">
+                <i class="glyphicon glyphicon-flag"></i>
+                {{ question.get_type_display }}
+            </span>
+            {% if user.is_superuser and not question.published%}
+                 <span class="posted-on">
+                <i class="glyphicon glyphicon-lock"></i>
+            </span>
+            {% endif %}
+        </div>
+    </header>
+    <div class="entry-content question-content" >
+                <div class="col-sm-12 content-show">
+                    <p>{{ question.content|safe|truncatechars_html:300}}</p>
+                </div>
+                <div class="col-sm-12 content-hide">
+                    <p>{{ question.content|safe }}</p>
+                </div>
+        <p ><a href="#"><h4 style="text-align: center"><span class="glyphicon  glyphicon-chevron-down  glyphicon"></span></h4></a></p></h3>
+        <p>
+            {%if question.list_sovled%}
+            <span class="btn btn-default sovled">Solved: </span>
+            {% for answer in question.list_sovled  %}
+            <a class="btn btn-default sovled" href="/profile/{{ answer.user.username }}">
+                <img width="28" height="28" avatar="{{ answer.user.username }}">
+            </a>
+            {% endfor %}
+            {%endif%}
+            <a class="btn btn-default read-more" href="editor/{{ question.id }}">Solve It <i class="fa fa-chevron-right"></i></a>
+        </p>
+    </div>
+    <hr class="section-divider">
+</article>
+{% endif %}
+{% endfor %}
